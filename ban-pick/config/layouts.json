@@ -1,0 +1,65 @@
+{
+  "compact": {
+
+    "$comment": "To use minWidth, change widthMode from fixed to dynamic",
+    "widthMode": "dynamic",
+
+    "width": 420,
+    "minWidth": 200,
+
+    "height": 70,
+
+    "gap": 8,
+
+    "fontSize": 20,
+    "iconSize": 70,
+    "teamIconSize": 40,
+
+    "showMapIcon": true,
+    "showTeamIcon": true,
+
+    "borderRadius": 0,
+
+    "animation": {
+      "initialOpacity": 0,
+      "translateY": 40,
+      "duration": 0.5,
+      "easing": "cubic-bezier(1,0,0,1)"
+    },
+
+    "banBackground":
+      "linear-gradient(90deg, #500, #900)",
+    "pickBackground":
+      "linear-gradient(90deg, #035, #069)",
+    "deciderBackground":
+      "linear-gradient(90deg, #333, #777)"
+  },
+
+  "center": {
+
+    "width": 220,
+    "height": 300,
+
+    "gap": 16,
+
+    "fontSize": 18,
+    "iconSize": 220,
+    "teamIconSize": 40,
+
+    "borderRadius": 0,
+
+    "animation": {
+      "initialOpacity": 0,
+      "translateY": 40,
+      "duration": 0.5,
+      "easing": "cubic-bezier(1,0,0,1)"
+    },
+
+    "banBackground":
+      "linear-gradient(180deg, #500, #900)",
+    "pickBackground":
+      "linear-gradient(180deg, #035, #069)",
+    "deciderBackground":
+      "linear-gradient(180deg, #333, #777)"
+  }
+}

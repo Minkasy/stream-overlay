@@ -1,0 +1,61 @@
+[
+    {
+      "name": "Ascent",
+      "image": "/assets/ascent.png"
+    },
+  
+    {
+      "name": "Bind",
+      "image": "/assets/bind.png"
+    },
+  
+    {
+      "name": "Haven",
+      "image": "/assets/haven.png"
+    },
+  
+    {
+      "name": "Split",
+      "image": "/assets/split.png"
+    },
+
+    {
+        "name": "Icebox",
+        "image": "/assets/icebox.png"
+    },
+
+    {
+        "name": "Breeze",
+        "image": "/assets/breeze.png"
+    },
+
+    {
+        "name": "Fracture",
+        "image": "/assets/fracture.png"
+    },
+
+    {
+        "name": "Pearl",
+        "image": "/assets/pearl.png"
+    },
+
+    {
+        "name": "Lotus",
+        "image": "/assets/lotus.png"
+    },
+
+    {
+        "name": "Sunset",
+        "image": "/assets/sunset.png"
+    },
+
+    {
+        "name": "Abyss",
+        "image": "/assets/abyss.png"
+    },
+
+    {
+        "name": "Corrode",
+        "image": "/assets/corrode.png"
+    }
+  ]

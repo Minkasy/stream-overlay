@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+#overlay {
+  position: absolute;
+  display: flex;
+}
+
+/* ===== CENTER ===== */
+
+body.center #overlay {
+  top: 50%;
+  left: 50%;
+  transform:
+    translate(-50%, -50%);
+  flex-direction: row;
+}
+
+/* ===== COMPACT ===== */
+
+body.compact-top-left #overlay,
+body.compact-top-right #overlay {
+  top: 20px;
+}
+
+body.compact-bottom-left #overlay,
+body.compact-bottom-right #overlay {
+  bottom: 20px;
+}
+
+body.compact-top-left #overlay,
+body.compact-bottom-left #overlay {
+  left: 20px;
+  align-items: flex-start;
+}
+
+body.compact-top-right #overlay,
+body.compact-bottom-right #overlay {
+  right: 20px;
+  align-items: flex-end;
+}
+
+body.compact-top-left #overlay,
+body.compact-top-right #overlay {
+  flex-direction: column;
+}
+
+body.compact-bottom-left #overlay,
+body.compact-bottom-right #overlay {
+  flex-direction: column-reverse;
+}
+
+/* ===== ENTRY ===== */
+
+.entry {
+  display: flex;
+  color: white;
+  overflow: hidden;
+}
+
+.entry.animate {
+  animation-fill-mode: forwards;
+}
+
+/* ===== COMPACT ===== */
+
+.entry.compact {
+  align-items: center;
+}
+
+.entry.compact.right {
+  flex-direction: row-reverse;
+}
+
+/* ===== CENTER ===== */
+
+.entry.center {
+  flex-direction: column;
+}
+
+.center-info {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+}
+
+.center-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.center-action {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.center-team {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.team-icon {
+  object-fit: cover;
+}
+
+/* ===== COMMON ===== */
+
+.map-image {
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+@keyframes show {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
