@@ -5,6 +5,7 @@ const renderedEntries =
   new Map();
 
 let currentPosition = null;
+let currentTeamsJson = "";
 
 const socket =
   createWebSocket(event => {
@@ -39,9 +40,14 @@ function render(payload) {
   const positionChanged =
     currentPosition !== position;
 
+  const teamsJson = JSON.stringify(payload.teams);
+  const teamsChanged =
+    currentTeamsJson !== teamsJson;
+  
+  currentTeamsJson = teamsJson;
   currentPosition = position;
 
-  if (positionChanged) {
+  if (positionChanged || teamsChanged) {
 
     rerenderAll(
       draft,
@@ -76,8 +82,7 @@ function render(payload) {
     const div =
       createEntry(
         entry,
-        draft,
-        view,
+        payload,
         compact,
         config
       );
@@ -126,8 +131,7 @@ function rerenderAll(
     const div =
       createEntry(
         entry,
-        draft,
-        view,
+        payload,
         compact,
         config,
         false
@@ -144,8 +148,7 @@ function rerenderAll(
 
 function createEntry(
   entry,
-  draft,
-  view,
+  payload,
   compact,
   config,
   animate = true
@@ -167,7 +170,7 @@ function createEntry(
   }
 
   if (
-    view.position.includes(
+    payload.view.position.includes(
       "right"
     )
   ) {
@@ -237,7 +240,7 @@ function createEntry(
   }
 
   const team =
-    draft.teams[entry.team]
+    payload.teams[entry.team]
     || {
       name: "DECIDER",
       icon: "/assets/decider.png"

@@ -80,13 +80,9 @@ function createInitialMaps() {
 
   return mapsConfig.map(
     (map, index) => ({
-
       id: `map_${index + 1}`,
-
       name: map.name,
-
       image: map.image,
-
       state: "available"
     })
   );
@@ -97,33 +93,25 @@ function createInitialMaps() {
 ========================= */
 
 let draftState = {
-
-  teams: {
-
-    team1: {
-
-      name: "Team 1",
-
-      icon:
-        "/assets/team1.png"
-    },
-
-    team2: {
-
-      name: "Team 2",
-
-      icon:
-        "/assets/team2.png"
-    }
-  },
-
   maps: createInitialMaps(),
-
   draftOrder: []
 };
 
-let viewState = {
+let teamState = {
+  team1: {
+    name: "Team 1",
+    icon:
+      "/assets/team1.png"
+  },
 
+  team2: {
+    name: "Team 2",
+    icon:
+      "/assets/team2.png"
+  }
+};
+
+let viewState = {
   position:
     "compact-top-left",
 
@@ -136,22 +124,17 @@ let viewState = {
 ========================= */
 
 let undoStack = [];
-
 let redoStack = [];
 
 function cloneState() {
-
   return JSON.parse(
     JSON.stringify(draftState)
   );
 }
 
 function pushUndo() {
-
   undoStack.push(cloneState());
-
   if (undoStack.length > 100) {
-
     undoStack.shift();
   }
 
@@ -163,29 +146,22 @@ function pushUndo() {
 ========================= */
 
 function sendState(ws) {
-
   ws.send(JSON.stringify({
-
     type: "state",
-
     payload: {
-
       draft: draftState,
-
+      teams: teamState,
       view: viewState
     }
   }));
 }
 
 function broadcastState() {
-
   wss.clients.forEach(client => {
-
     if (
       client.readyState
       === WebSocket.OPEN
     ) {
-
       sendState(client);
     }
   });
@@ -196,7 +172,6 @@ function broadcastState() {
 ========================= */
 
 function getMap(mapId) {
-
   return draftState.maps.find(
     m => m.id === mapId
   );
@@ -215,45 +190,31 @@ function performDraft(
   const map = getMap(mapId);
 
   if (!map) return;
-
   if (
     map.state !== "available"
   ) {
-
     return;
   }
 
   pushUndo();
 
   if (action === "ban") {
-
     map.state = "banned";
-
   } else if (
     action === "pick"
   ) {
-
     map.state = "picked";
-
   } else {
-
     map.state = "decider";
   }
 
   draftState.draftOrder.push({
-
     id: Date.now(),
-
     mapId,
-
     mapName: map.name,
-
     image: map.image,
-
     action,
-
     team: teamKey,
-
     timestamp: Date.now()
   });
 
@@ -265,11 +226,7 @@ function performDraft(
 ========================= */
 
 function updateTeams(teams) {
-
-  pushUndo();
-
-  draftState.teams = teams;
-
+  teamState = teams;
   broadcastState();
 }
 
@@ -278,11 +235,9 @@ function updateTeams(teams) {
 ========================= */
 
 function undo() {
-
   if (
     undoStack.length === 0
   ) {
-
     return;
   }
 
@@ -299,7 +254,6 @@ function undo() {
 ========================= */
 
 function redo() {
-
   if (
     redoStack.length === 0
   ) {
@@ -333,9 +287,7 @@ wss.on(
           JSON.parse(message);
 
         switch (data.type) {
-
           case "draft":
-
             performDraft(
               data.mapId,
               data.action,
@@ -345,32 +297,24 @@ wss.on(
             break;
 
           case "undo":
-
             undo();
-
             break;
 
           case "redo":
-
             redo();
-
             break;
 
           case "update-teams":
-
             updateTeams(
               data.payload
             );
-
             break;
 
           case "set-position":
-
             viewState.position =
               data.position;
-
             broadcastState();
-
+            
             break;
         }
       }

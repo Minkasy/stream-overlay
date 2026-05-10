@@ -26,13 +26,10 @@ socket.addEventListener(
 ========================= */
 
 function render() {
-
   if (!currentState) return;
 
   renderTeams();
-
   renderMaps();
-
   renderHistory();
 }
 
@@ -43,7 +40,7 @@ function render() {
 function renderTeams() {
 
   const teams =
-    currentState.draft.teams;
+    currentState.teams;
 
   document.getElementById(
     "team1-name"
@@ -128,7 +125,7 @@ function renderMaps() {
         : "";
 
     const teams =
-      currentState.draft.teams;
+      currentState.teams;
 
     div.innerHTML = `
 
@@ -235,13 +232,9 @@ function draft(
 ) {
 
   socket.send(JSON.stringify({
-
     type: "draft",
-
     mapId,
-
     action,
-
     team
   }));
 }
@@ -271,7 +264,7 @@ function renderHistory() {
     div.className = "history-entry";
 
     const team =
-      currentState.draft.teams[
+      currentState.teams[
         entry.team
       ] || {
 
