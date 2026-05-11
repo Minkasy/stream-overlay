@@ -115,6 +115,8 @@ let viewState = {
   position:
     "compact-top-left",
 
+  overlayVisible: true,
+
   layoutConfig:
     layoutsConfig
 };
@@ -158,10 +160,7 @@ function sendState(ws) {
 
 function broadcastState() {
   wss.clients.forEach(client => {
-    if (
-      client.readyState
-      === WebSocket.OPEN
-    ) {
+    if (client.readyState === WebSocket.OPEN) {
       sendState(client);
     }
   });
@@ -311,10 +310,13 @@ wss.on(
             break;
 
           case "set-position":
-            viewState.position =
-              data.position;
+            viewState.position = data.position;
             broadcastState();
-            
+            break;
+
+          case "set-overlay-visible":
+            viewState.overlayVisible = data.visible;
+            broadcastState();
             break;
         }
       }

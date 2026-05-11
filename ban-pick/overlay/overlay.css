@@ -61,10 +61,6 @@ body.compact-bottom-right #overlay {
   overflow: hidden;
 }
 
-.entry.animate {
-  animation-fill-mode: forwards;
-}
-
 /* ===== COMPACT ===== */
 
 .entry.compact {
@@ -119,11 +115,4 @@ body.compact-bottom-right #overlay {
   align-items: center;
   gap: 12px;
   padding: 12px;
-}
-
-@keyframes show {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

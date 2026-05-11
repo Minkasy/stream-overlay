@@ -24,7 +24,8 @@
       "initialOpacity": 0,
       "translateY": 40,
       "duration": 0.5,
-      "easing": "cubic-bezier(1,0,0,1)"
+      "easing": "cubic-bezier(1,0,0,1)",
+      "stagger": 0.08
     },
 
     "banBackground":
@@ -52,7 +53,8 @@
       "initialOpacity": 0,
       "translateY": 40,
       "duration": 0.5,
-      "easing": "cubic-bezier(1,0,0,1)"
+      "easing": "cubic-bezier(1,0,0,1)",
+      "stagger": 0.12
     },
 
     "banBackground":

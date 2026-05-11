@@ -331,3 +331,11 @@ function setPosition(
     position
   }));
 }
+
+function setOverlayVisible(visible) {
+  socket.send(JSON.stringify({
+    type:
+      "set-overlay-visible",
+    visible
+  }));
+}

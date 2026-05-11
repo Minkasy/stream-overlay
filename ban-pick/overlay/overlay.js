@@ -6,6 +6,7 @@ const renderedEntries =
 
 let currentPosition = null;
 let currentTeamsJson = "";
+let currentOverlayVisible = true;
 
 const socket =
   createWebSocket(event => {
@@ -36,14 +37,25 @@ function render(payload) {
       ? view.layoutConfig.compact
       : view.layoutConfig.center;
 
-  const positionChanged =
-    currentPosition !== position;
+  if (!view.overlayVisible) {
+    overlay.innerHTML = "";
+    renderedEntries.clear();
+    currentOverlayVisible = false;
+  
+    return;
+  }
+
+  const positionChanged = currentPosition !== position;
 
   const teamsJson = JSON.stringify(payload.teams);
-
   const teamsChanged = currentTeamsJson !== teamsJson;
 
-  if (positionChanged || teamsChanged) {
+  const overlayVisibleChanged =
+    currentOverlayVisible !== view.overlayVisible;
+
+  if (positionChanged ||
+      teamsChanged ||
+      (overlayVisibleChanged && view.overlayVisible)) {
     rerenderAll(
       payload,
       compact,
@@ -51,6 +63,7 @@ function render(payload) {
     );
     currentPosition = position;
     currentTeamsJson = teamsJson;
+    currentOverlayVisible = view.overlayVisible;
 
     return;
   }
@@ -72,12 +85,12 @@ function render(payload) {
           entry,
           payload,
           compact,
-          config
+          config,
+          true
         );
 
-      overlay.appendChild(
-        div
-      );
+      overlay.appendChild(div);
+      animateEntry(div);
 
       renderedEntries.set(
         entry.id,
@@ -118,25 +131,37 @@ function rerenderAll(
 
   overlay.style.gap = `${config.gap}px`;
 
+  const animationTargets = [];
   draft.draftOrder.forEach(entry => {
 
-      const div =
-        createEntry(
+      const div = createEntry(
           entry,
           payload,
           compact,
           config,
-          false
-        );
-
-      overlay.appendChild(
-        div
+          true
       );
+
+      div.style.opacity = config.animation.initialOpacity;
+      div.style.transform =
+        `translateY(${config.animation.translateY}px)`;
+
+      overlay.appendChild(div);
 
       renderedEntries.set(
         entry.id,
         div
       );
+
+      animationTargets.push(div);
+    },
+  );
+
+  animationTargets.forEach((div, index) => {
+      setTimeout(() => {
+        animateEntry(div);
+      },
+      index * config.animation.stagger * 1000);
     }
   );
 }
@@ -200,23 +225,22 @@ function createEntry(
   div.style.borderRadius =
     `${config.borderRadius}px`;
 
+  const anim = config.animation;
+  
+  div.style.transition =
+    `
+      opacity ${anim.duration}s ${anim.easing},
+      transform ${anim.duration}s ${anim.easing}
+    `;
+
   if (animate) {
-
-    const anim = config.animation;
-
     div.style.opacity = anim.initialOpacity;
-
     div.style.transform = `translateY(${anim.translateY}px)`;
-
-    div.style.animation =
-      `
-        show
-        ${anim.duration}s
-        ${anim.easing}
-        forwards
-      `;
+  } else {
+    div.style.opacity = 1;
+    div.style.transform = "translateY(0)";
   }
-
+  
   if (entry.action === "ban") {
     div.style.background =
       config.banBackground;
@@ -353,4 +377,13 @@ function createEntry(
   }
 
   return div;
+}
+
+function animateEntry(div) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      div.style.opacity = 1;
+      div.style.transform = "translateY(0)";
+    });
+  });
 }
