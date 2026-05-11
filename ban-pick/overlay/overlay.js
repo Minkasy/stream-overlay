@@ -298,26 +298,42 @@ function createEntry(
         `
         : "";
 
+    const compactText =
+      entry.team === "system"
+        ? `
+          <div>
+            ${entry.action.toUpperCase()}
+          </div>
+    
+          <div>
+            ${entry.mapName}
+          </div>
+        `
+    
+        : `
+          <div>
+            ${team.name}
+          </div>
+    
+          <div>
+            ${entry.action.toUpperCase()}
+          </div>
+    
+          <div>
+            ${entry.mapName}
+          </div>
+        `;
+      
     div.innerHTML = `
-
+    
       ${mapIconHtml}
-
+    
       <div class="info">
-
+    
         ${teamIconHtml}
-
-        <div>
-          ${team.name}
-        </div>
-
-        <div>
-          ${entry.action.toUpperCase()}
-        </div>
-
-        <div>
-          ${entry.mapName}
-        </div>
-
+    
+        ${compactText}
+    
       </div>
     `;
 
