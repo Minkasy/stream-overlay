@@ -1,105 +1,249 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-theme="dark">
+
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Draft Control</title>
+
+  <!-- Tailwind + daisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+
   <link rel="stylesheet" href="control.css">
 </head>
 
-<body>
-  <h1>Draft Control</h1>
+<body class="bg-base-200 min-h-screen text-base-content">
 
-  <!-- =====================
-       TEAMS
-  ====================== -->
+  <div class="container mx-auto p-6 space-y-6">
 
-  <section>
-    <h2>
-      Teams
-    </h2>
+    <!-- HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-4xl font-bold">
+          Draft Control
+        </h1>
 
-    <div class="teams">
-      <div class="team-card">
-
-        <h3>Team 1</h3>
-
-        <input id="team1-name" placeholder="Team 1 Name">
-        <input id="team1-icon" placeholder="/assets/team1.png">
-
+        <p class="text-base-content/70 mt-1">
+          Tournament Overlay Management
+        </p>
       </div>
-
-      <div class="team-card">
-
-        <h3>Team 2</h3>
-
-        <input id="team2-name" placeholder="Team 2 Name">
-        <input id="team2-icon" placeholder="/assets/team2.png">
-
-      </div>
-
     </div>
 
-    <button onclick="updateTeams()">Update Teams</button>
+    <!-- =====================
+         TEAMS
+    ====================== -->
 
-  </section>
+    <section class="card bg-base-100 shadow-xl">
+      <div class="card-body p-4">
+    
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="card-title text-lg">
+            Teams
+          </h2>
+    
+          <button
+            class="btn btn-primary btn-sm"
+            onclick="updateTeams()"
+          >
+            Update
+          </button>
+        </div>
+    
+        <div class="grid grid-cols-2 gap-3">
+    
+          <!-- TEAM 1 -->
+          <div class="bg-base-200 rounded-xl p-3 space-y-2">
+    
+            <div class="text-sm font-bold">
+              Team 1
+            </div>
+    
+            <input
+              id="team1-name"
+              type="text"
+              placeholder="Name"
+              class="input input-bordered input-sm w-full"
+            />
+    
+            <input
+              id="team1-icon"
+              type="text"
+              placeholder="Icon Path"
+              class="input input-bordered input-sm w-full"
+            />
+    
+          </div>
+    
+          <!-- TEAM 2 -->
+          <div class="bg-base-200 rounded-xl p-3 space-y-2">
+    
+            <div class="text-sm font-bold">
+              Team 2
+            </div>
+    
+            <input
+              id="team2-name"
+              type="text"
+              placeholder="Name"
+              class="input input-bordered input-sm w-full"
+            />
+    
+            <input
+              id="team2-icon"
+              type="text"
+              placeholder="Icon Path"
+              class="input input-bordered input-sm w-full"
+            />
+    
+          </div>
+    
+        </div>
+      </div>
+    </section>
 
-  <!-- =====================
-       POSITION
-  ====================== -->
+    <!-- =====================
+         POSITION & HISTORY
+    ====================== -->
 
-  <section>
-    <h2>
-      Overlay Position
-    </h2>
+    <div class="grid grid-cols-2 gap-4">
 
-    <div class="position-buttons">
+      <!-- POSITION -->
+      <section class="card bg-base-100 shadow-xl">
+        <div class="card-body p-4">
+    
+          <h2 class="card-title text-lg mb-3">
+            Overlay Position
+          </h2>
+    
+          <div class="grid grid-cols-2 gap-2">
+    
+            <button class="btn btn-xs btn-outline"
+              onclick="setPosition('compact-top-left')">
+              Top Left
+            </button>
+    
+            <button class="btn btn-xs btn-outline"
+              onclick="setPosition('compact-top-right')">
+              Top Right
+            </button>
+    
+            <button class="btn btn-xs btn-outline"
+              onclick="setPosition('compact-bottom-left')">
+              Bottom Left
+            </button>
+    
+            <button class="btn btn-xs btn-outline"
+              onclick="setPosition('compact-bottom-right')">
+              Bottom Right
+            </button>
+    
+          </div>
 
-      <button onclick="setPosition('center')">Center</button>
-      <button onclick="setPosition('compact-top-left')">Compact Top Left</button>
-      <button onclick="setPosition('compact-top-right')">Compact Top Right</button>
-      <button onclick="setPosition('compact-bottom-left')">Compact Bottom Left</button>
-      <button onclick="setPosition('compact-bottom-right')">Compact Bottom Right</button>
-
+          <button class="btn btn-xs btn-outline"
+            onclick="setPosition('center')">
+            Center Card
+          </button>
+    
+          <div class="flex gap-2 mt-3">
+    
+            <button
+              class="btn btn-success btn-sm flex-1"
+              onclick="setOverlayVisible(true)"
+            >
+              Show
+            </button>
+    
+            <button
+              class="btn btn-error btn-sm flex-1"
+              onclick="setOverlayVisible(false)"
+            >
+              Hide
+            </button>
+    
+          </div>
+    
+        </div>
+      </section>
+    
+      <!-- HISTORY -->
+      <section class="card bg-base-100 shadow-xl">
+        <div class="card-body p-4">
+    
+          <h2 class="card-title text-lg mb-3">
+            History
+          </h2>
+    
+          <div class="flex gap-2">
+    
+            <button
+              class="btn btn-warning btn-sm flex-1"
+              onclick="undo()"
+            >
+              Undo
+            </button>
+    
+            <button
+              class="btn btn-info btn-sm flex-1"
+              onclick="redo()"
+            >
+              Redo
+            </button>
+    
+          </div>
+    
+        </div>
+      </section>
+    
     </div>
 
-    <button onclick="setOverlayVisible(true)">Show Overlay</button>
-    <button onclick="setOverlayVisible(false)">Hide Overlay</button>
+    <!-- =====================
+         MAP POOL
+    ====================== -->
 
-  </section>
+    <section class="card bg-base-100 shadow-xl">
+      <div class="card-body">
 
-  <!-- =====================
-       UNDO REDO
-  ====================== -->
+        <div class="flex items-center justify-between">
+          <h2 class="card-title text-2xl">
+            Map Pool
+          </h2>
+        </div>
 
-  <section>
-    <h2>History Control</h2>
+        <div
+          id="maps"
+          class="grid grid-cols-1 xl:grid-cols-2 gap-5 mt-4"
+        ></div>
 
-    <button onclick="undo()">Undo</button>
-    <button onclick="redo()">Redo</button>
+      </div>
+    </section>
 
-  </section>
+    <!-- =====================
+         DRAFT HISTORY
+    ====================== -->
 
-  <!-- =====================
-       MAP POOL
-  ====================== -->
+    <section class="card bg-base-100 shadow-xl">
+      <div class="card-body">
 
-  <section>
-    <h2>MAP Pool</h2>
+        <h2 class="card-title text-2xl">
+          Draft History
+        </h2>
 
-    <div id="maps"></div>
+        <div
+          id="history"
+          class="space-y-3 mt-4"
+        ></div>
 
-  </section>
+      </div>
+    </section>
 
-  <!-- =====================
-       DRAFT HISTORY
-  ====================== -->
-
-  <section>
-    <h2>Draft History</h2>
-
-    <div id="history"></div>
-
-  </section>
+  </div>
 
   <script src="/shared/ws.js"></script>
   <script src="control.js"></script>
