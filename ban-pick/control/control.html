@@ -1,50 +1,30 @@
 <!DOCTYPE html>
-
 <html lang="ja">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <title>
-    Draft Control
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="control.css">
-
+  <title>Draft Control</title>
+  <link rel="stylesheet" href="control.css">
 </head>
 
 <body>
-
-  <h1>
-    Draft Control
-  </h1>
+  <h1>Draft Control</h1>
 
   <!-- =====================
        TEAMS
   ====================== -->
 
   <section>
-
     <h2>
       Teams
     </h2>
 
     <div class="teams">
-
       <div class="team-card">
 
         <h3>Team 1</h3>
 
-        <input
-          id="team1-name"
-          placeholder="Team 1 Name">
-
-        <input
-          id="team1-icon"
-          placeholder="/assets/team1.png">
+        <input id="team1-name" placeholder="Team 1 Name">
+        <input id="team1-icon" placeholder="/assets/team1.png">
 
       </div>
 
@@ -52,21 +32,14 @@
 
         <h3>Team 2</h3>
 
-        <input
-          id="team2-name"
-          placeholder="Team 2 Name">
-
-        <input
-          id="team2-icon"
-          placeholder="/assets/team2.png">
+        <input id="team2-name" placeholder="Team 2 Name">
+        <input id="team2-icon" placeholder="/assets/team2.png">
 
       </div>
 
     </div>
 
-    <button onclick="updateTeams()">
-      Update Teams
-    </button>
+    <button onclick="updateTeams()">Update Teams</button>
 
   </section>
 
@@ -75,75 +48,22 @@
   ====================== -->
 
   <section>
-
     <h2>
       Overlay Position
     </h2>
 
     <div class="position-buttons">
 
-      <button
-        onclick="
-          setPosition('center')
-        ">
-
-        Center
-
-      </button>
-
-      <button
-        onclick="
-          setPosition(
-            'compact-top-left'
-          )
-        ">
-
-        Compact Top Left
-
-      </button>
-
-      <button
-        onclick="
-          setPosition(
-            'compact-top-right'
-          )
-        ">
-
-        Compact Top Right
-
-      </button>
-
-      <button
-        onclick="
-          setPosition(
-            'compact-bottom-left'
-          )
-        ">
-
-        Compact Bottom Left
-
-      </button>
-
-      <button
-        onclick="
-          setPosition(
-            'compact-bottom-right'
-          )
-        ">
-
-        Compact Bottom Right
-
-      </button>
+      <button onclick="setPosition('center')">Center</button>
+      <button onclick="setPosition('compact-top-left')">Compact Top Left</button>
+      <button onclick="setPosition('compact-top-right')">Compact Top Right</button>
+      <button onclick="setPosition('compact-bottom-left')">Compact Bottom Left</button>
+      <button onclick="setPosition('compact-bottom-right')">Compact Bottom Right</button>
 
     </div>
 
-    <button onclick="setOverlayVisible(true)">
-      Show Overlay
-    </button>
-
-    <button onclick="setOverlayVisible(false)">
-      Hide Overlay
-    </button>
+    <button onclick="setOverlayVisible(true)">Show Overlay</button>
+    <button onclick="setOverlayVisible(false)">Hide Overlay</button>
 
   </section>
 
@@ -152,18 +72,10 @@
   ====================== -->
 
   <section>
+    <h2>History Control</h2>
 
-    <h2>
-      History Control
-    </h2>
-
-    <button onclick="undo()">
-      Undo
-    </button>
-
-    <button onclick="redo()">
-      Redo
-    </button>
+    <button onclick="undo()">Undo</button>
+    <button onclick="redo()">Redo</button>
 
   </section>
 
@@ -172,10 +84,7 @@
   ====================== -->
 
   <section>
-
-    <h2>
-      MAP Pool
-    </h2>
+    <h2>MAP Pool</h2>
 
     <div id="maps"></div>
 
@@ -186,19 +95,14 @@
   ====================== -->
 
   <section>
-
-    <h2>
-      Draft History
-    </h2>
+    <h2>Draft History</h2>
 
     <div id="history"></div>
 
   </section>
 
   <script src="/shared/ws.js"></script>
-
   <script src="control.js"></script>
 
 </body>
-
 </html>
