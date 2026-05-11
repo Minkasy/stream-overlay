@@ -13,7 +13,6 @@ const socket =
     const data = JSON.parse(event.data);
 
     if (data.type === "state") {
-
       render(data.payload);
     }
   });
@@ -41,59 +40,51 @@ function render(payload) {
     currentPosition !== position;
 
   const teamsJson = JSON.stringify(payload.teams);
-  const teamsChanged =
-    currentTeamsJson !== teamsJson;
-  
-  currentTeamsJson = teamsJson;
-  currentPosition = position;
+
+  const teamsChanged = currentTeamsJson !== teamsJson;
 
   if (positionChanged || teamsChanged) {
-
     rerenderAll(
-      draft,
-      view,
+      payload,
       compact,
       config
     );
+    currentPosition = position;
+    currentTeamsJson = teamsJson;
 
     return;
   }
 
-  document.body.className =
-    position;
+  document.body.className = position;
 
-  overlay.style.gap =
-    `${config.gap}px`;
+  overlay.style.gap = `${config.gap}px`;
 
-  const currentIds =
-    new Set();
+  const currentIds = new Set();
 
   draft.draftOrder.forEach(entry => {
+      currentIds.add(entry.id);
 
-    currentIds.add(entry.id);
+      if (renderedEntries.has(entry.id)) {
+        return;
+      }
 
-    if (
-      renderedEntries.has(entry.id)
-    ) {
+      const div = createEntry(
+          entry,
+          payload,
+          compact,
+          config
+        );
 
-      return;
-    }
-
-    const div =
-      createEntry(
-        entry,
-        payload,
-        compact,
-        config
+      overlay.appendChild(
+        div
       );
 
-    overlay.appendChild(div);
-
-    renderedEntries.set(
-      entry.id,
-      div
-    );
-  });
+      renderedEntries.set(
+        entry.id,
+        div
+      );
+    }
+  );
 
   for (
     const [id, element]
@@ -101,49 +92,53 @@ function render(payload) {
   ) {
 
     if (!currentIds.has(id)) {
-
       element.remove();
-
       renderedEntries.delete(id);
     }
   }
+
+  currentPosition = position;
+  currentTeamsJson = teamsJson;
 }
 
 function rerenderAll(
-  draft,
-  view,
+  payload,
   compact,
   config
 ) {
 
-  document.body.className =
-    view.position;
+  const draft = payload.draft;
+  const view = payload.view;
+
+  document.body.className = view.position;
 
   overlay.innerHTML = "";
 
   renderedEntries.clear();
 
-  overlay.style.gap =
-    `${config.gap}px`;
+  overlay.style.gap = `${config.gap}px`;
 
   draft.draftOrder.forEach(entry => {
 
-    const div =
-      createEntry(
-        entry,
-        payload,
-        compact,
-        config,
-        false
+      const div =
+        createEntry(
+          entry,
+          payload,
+          compact,
+          config,
+          false
+        );
+
+      overlay.appendChild(
+        div
       );
 
-    overlay.appendChild(div);
-
-    renderedEntries.set(
-      entry.id,
-      div
-    );
-  });
+      renderedEntries.set(
+        entry.id,
+        div
+      );
+    }
+  );
 }
 
 function createEntry(
@@ -154,8 +149,7 @@ function createEntry(
   animate = true
 ) {
 
-  const div =
-    document.createElement("div");
+  const div = document.createElement("div");
 
   div.className =
     `entry ${
@@ -166,7 +160,9 @@ function createEntry(
 
   if (animate) {
 
-    div.classList.add("animate");
+    div.classList.add(
+      "animate"
+    );
   }
 
   if (
@@ -175,12 +171,15 @@ function createEntry(
     )
   ) {
 
-    div.classList.add("right");
+    div.classList.add(
+      "right"
+    );
   }
 
   if (
     compact
-    && config.widthMode === "fixed"
+    && config.widthMode
+      === "fixed"
   ) {
 
     div.style.width =
@@ -203,15 +202,12 @@ function createEntry(
 
   if (animate) {
 
-    const anim =
-      config.animation;
-  
-    div.style.opacity =
-      anim.initialOpacity;
-  
-    div.style.transform =
-      `translateY(${anim.translateY}px)`;
-  
+    const anim = config.animation;
+
+    div.style.opacity = anim.initialOpacity;
+
+    div.style.transform = `translateY(${anim.translateY}px)`;
+
     div.style.animation =
       `
         show
@@ -222,133 +218,136 @@ function createEntry(
   }
 
   if (entry.action === "ban") {
-
     div.style.background =
       config.banBackground;
-
-  } else if (
-    entry.action === "pick"
-  ) {
-
+  } else if (entry.action === "pick") {
     div.style.background =
       config.pickBackground;
-
   } else {
-
     div.style.background =
       config.deciderBackground;
   }
 
-  const team =
-    payload.teams[entry.team]
-    || {
+  const team = payload.teams[
+      entry.team
+    ] || {
       name: "DECIDER",
-      icon: "/assets/decider.png"
+      icon:
+        "/assets/decider.png"
     };
 
   if (compact) {
 
     const showMapIcon =
       config.showMapIcon;
-  
+
     const showTeamIcon =
       config.showTeamIcon
-      && entry.team !== "system";
-  
+      && entry.team
+      !== "system";
+
     const mapIconHtml =
       showMapIcon
         ? `
           <img
             class="map-image"
             src="${entry.image}"
+
             style="
               width:${config.iconSize}px;
               height:${config.iconSize}px;
             ">
         `
         : "";
-  
+
     const teamIconHtml =
       showTeamIcon
         ? `
           <img
             class="team-icon"
             src="${team.icon}"
-  
+
             style="
               width:${config.teamIconSize}px;
               height:${config.teamIconSize}px;
             ">
         `
         : "";
-  
+
     div.innerHTML = `
-  
+
       ${mapIconHtml}
-  
+
       <div class="info">
-  
+
         ${teamIconHtml}
-  
+
         <div>
           ${team.name}
         </div>
-  
+
         <div>
           ${entry.action.toUpperCase()}
         </div>
-  
+
         <div>
           ${entry.mapName}
         </div>
-  
+
       </div>
     `;
+
   } else {
 
     div.innerHTML = `
+
       <img
         class="map-image"
         src="${entry.image}"
+
         style="
           width:${config.iconSize}px;
           height:${config.iconSize}px;
         ">
-    
+
       <div class="center-info">
-    
+
         ${
-          entry.team !== "system"
+          entry.team
+          !== "system"
+
             ? `
               <img
                 class="team-icon"
                 src="${team.icon}"
-    
+
                 style="
                   width:${config.teamIconSize}px;
                   height:${config.teamIconSize}px;
                 ">
             `
+
             : ""
         }
-    
+
         <div class="center-text">
-    
+
           <div class="center-action">
-    
+
             ${entry.action.toUpperCase()}
+
             ${entry.mapName}
-    
+
           </div>
-    
+
           <div class="center-team">
-    
+
             ${team.name}
-    
+
           </div>
-    
+
         </div>
-    
+
       </div>
     `;
   }
